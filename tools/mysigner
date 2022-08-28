@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Caution
+# 1. After you re-create keystore and sign an apk with it,
+#    you cannot overwrite-install the apk.
+#    Uninstall existing app first.
+#    'make clean' does not remove keystore and keystore password file.
+# 2. I strongly recommend you choose keystore password yourself.
+
+dname='cn=example.com, ou=Example Unit, o=Example inc., c=JP'
+pass=key/ks_storepass
+
+mkdir -p key
+test -r $pass ||
+echo UacgXdVaqv4q >$pass
+
+test -r key/ks ||
+keytool -v -genkeypair \
+  -dname "$dname" \
+  -keyalg RSA \
+  -keystore key/ks -storepass:file $pass
+
+apksigner sign -v \
+  --ks key/ks --ks-pass file:$pass \
+  --out out/signed.apk out/unsigned.apk

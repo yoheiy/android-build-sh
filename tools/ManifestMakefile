@@ -1,0 +1,10 @@
+o = AndroidManifest.xml
+
+all: $o
+
+AndroidManifest.xml: manifest.txt
+	make tools/toupper
+	m4 $< | ./tools/toupper | ./tools/txttoxml >$@
+
+clean:
+	$(RM) $o tools/toupper

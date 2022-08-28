@@ -1,0 +1,17 @@
+define(A, android)dnl
+manifest
+   xmlns:A='http://schemas.A.com/apk/res/A'
+   package='com.example.canvas'
+   uses-sdk
+      A:min~sdk~version='12'
+      A:target~sdk~version='23'
+   application
+      A:label='@string/app_name'
+      A:icon='@mipmap/ic_launcher'
+      activity
+         A:name='.~main~act'
+         intent-filter
+            action
+               A:name='A.intent.action.~"main'
+            category
+               A:name='A.intent.category.~"launcher'

@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+import sys
+
+def count_indent(s):
+    r = 0
+    for c in s:
+        if c != ' ': break
+        r += 1
+    return r
+
+class Unwinder:
+    def __init__(self):
+        self.stack = [] # [(indent, element_name)]
+        self.nochild = True
+        self.open = False
+
+    def unwind(self, n):
+        while len(self.stack) > 0:
+            m = self.stack[-1]
+            if m[0] < n: break
+            spc = m[0] * ' '
+            if self.nochild:
+                print(spc + ' />')
+                self.open = False
+            else:
+                print(spc + '</%s>' % m[1])
+            del(self.stack[-1])
+            self.nochild = False
+
+    def add(self, n, s):
+        self.stack.append((n, s))
+        self.nochild = True
+        self.open = True
+
+u = Unwinder()
+
+for l in sys.stdin:
+    s = l.strip()
+    n = count_indent(l)
+    # print('%d <%s>' % (n, s))
+    if s == '': continue
+
+    u.unwind(n)
+
+    if s.find('=') == -1:
+        if u.open: print(n * ' ' + '>')
+        print(n * ' ' + '<%s' % s)
+        u.add(n, s);
+    else:
+        print(n * ' ' + s)
+
+u.unwind(0)
