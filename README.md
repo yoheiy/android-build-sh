@@ -1,6 +1,7 @@
 # Android command line build example
 
 To build:
+
     make
 
 Output APK file is `out/signed.apk`.
