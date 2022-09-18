@@ -1,7 +1,7 @@
 define(A, android)dnl
 manifest
    xmlns:A='http://schemas.A.com/apk/res/A'
-   package='com.example.canvas'
+   package='com.example.firstkotlin'
    uses-sdk
       A:min~sdk~version='12'
       A:target~sdk~version='23'

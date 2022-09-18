@@ -1,7 +1,10 @@
 #!/bin/sh
 
 jar=/usr/lib/android-sdk/platforms/android-23/android.jar
-src=src/com/example/canvas/MainAct.java
+src_dir=src/com/example/firstkotlin
+main=MainAct.java
+sub=Sub.java
+alt=Alt.kt
 apk=unsigned.apk
 dex=classes.dex
 manif=AndroidManifest.xml
@@ -16,7 +19,8 @@ v && vout=stdout
 v || vout=null
 
 #alias j="ecj $verbose -7 -cp out:$jar"
-alias j="javac $verbose --release 7 -cp out:$jar"
+alias j="javac $verbose --release 8 -cp out:$jar"
+alias k="kotlinc $verbose -cp out:$jar"
 alias package="aapt p $v -M $manif -S res -I $jar"
 alias add="aapt a $v"
 
@@ -33,7 +37,8 @@ mkdir -p gen out
 
 package -J gen || exit
 j -d out gen/R.java
-j -d out $src || exit
+k -d out $src_dir/$alt || exit
+j -d out $src_dir/$main $src_dir/$sub || exit
 dx --dex --output=out/$dex out
 package -F out/$apk
 

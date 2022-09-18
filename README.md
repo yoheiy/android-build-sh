@@ -1,6 +1,7 @@
 # Android command line build example
 
 To build:
+
     make
 
 Output APK file is `out/signed.apk`.
@@ -14,3 +15,5 @@ It depends on some Debian Packages:
   - ecj: /usr/bin/ecj, OR
   - openjdk-11-jdk-headless: /usr/lib/jvm/java-11-openjdk-amd64/bin/javac
   - openjdk-11-jre-headless: /usr/lib/jvm/java-11-openjdk-amd64/bin/keytool
+
+It depends on kotlinc from kotlinlang.org.
