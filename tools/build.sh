@@ -38,8 +38,9 @@ mkdir -p gen out
 
 package -J gen || exit
 j -d out gen/R.java
+j -d out $src_dir/$sub || exit
 k -d $kjar -include-runtime -no-reflect $src_dir/$alt || exit
-j -d out $src_dir/$main $src_dir/$sub || exit
+j -d out $src_dir/$main || exit
 dx --dex --output=out/$dex out
 package -F out/$apk
 

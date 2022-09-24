@@ -16,9 +16,10 @@ extends Activity
       setContentView(R.layout.main_act);
 
       Sub s = new Sub();
-      Alt a = new Alt();
+      Sub a = new Alt();
       TextView hello = (TextView)findViewById(R.id.text_hello);
 
-      hello.setText(s.say_hello() + '\n' + a.say_hello());
+      hello.setText(s.say_hello() +
+                    a.say_hello());
    }
 }

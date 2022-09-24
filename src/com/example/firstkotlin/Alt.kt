@@ -1,9 +1,10 @@
 package com.example.firstkotlin
 
-class Alt {
+class Alt : Sub() {
    val the_language = "Kotlin"
+   override fun lang() = the_language
 
-   fun say_hello() = "hello, I was written in $the_language.\n" + countup(8) + fib(100)
+   override fun say_hello() = super.say_hello() + countup(8) + fib(100)
    fun countup(n: Int) = (1 until n).fold(""){
       a, x -> a + "$x! = ${ fact(x) }\n"
    }
