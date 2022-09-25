@@ -1,6 +1,6 @@
 #!/bin/sh
 
-jar=/usr/lib/android-sdk/platforms/android-23/android.jar
+ajar=/usr/lib/android-sdk/platforms/android-23/android.jar
 kjar=out/kt.jar
 src_dir=src/com/example/firstkotlin
 main=MainAct.java
@@ -19,10 +19,10 @@ v && verbose=-verbose
 v && vout=stdout
 v || vout=null
 
-#alias j="ecj $verbose -7 -cp out:$jar"
-alias j="javac $verbose --release 8 -cp out:$jar:$kjar"
-alias k="kotlinc $verbose -cp out:$jar"
-alias package="aapt p $v -M $manif -S res -I $jar"
+#alias j="ecj -7 $verbose -cp out:$ajar"
+alias j="javac   $verbose -cp out:$ajar:$kjar --release 8"
+alias k="kotlinc $verbose -cp out:$ajar"
+alias pkg="aapt p $v -M $manif -S res -I $ajar"
 alias add="aapt a $v"
 
 findsort(){ find -type f | sort ; true ; }
@@ -36,13 +36,13 @@ rm -fr gen out
 test "x$1" = xclean && exit
 mkdir -p gen out
 
-package -J gen || exit
+pkg -J gen || exit
 j -d out gen/R.java
 j -d out $src_dir/$sub || exit
 k -d $kjar -include-runtime -no-reflect $src_dir/$alt || exit
 j -d out $src_dir/$main || exit
 dx --dex --output=out/$dex out
-package -F out/$apk
+pkg -F out/$apk
 
 cd out
 add -f $apk $dex >/dev/$vout
