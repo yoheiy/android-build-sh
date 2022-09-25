@@ -9,6 +9,7 @@ alt=Alt.kt
 apk=unsigned.apk
 dex=classes.dex
 manif=AndroidManifest.xml
+#dx_opt=--no-optimize
 
 PATH=/usr/lib/android-sdk/build-tools/debian:"$PATH"
 
@@ -25,7 +26,7 @@ alias k="kotlinc $verbose -cp out:$ajar"
 alias pkg="aapt p $v -M $manif -S res -I $ajar"
 alias add="aapt a $v"
 
-findsort(){ find -type f | sort ; true ; }
+findsort(){ find * -type f | sort ; true ; }
 
 # --- main ---
 
@@ -36,12 +37,14 @@ rm -fr gen out
 test "x$1" = xclean && exit
 mkdir -p gen out
 
+v && set -x
+
 pkg -J gen || exit
 j -d out gen/R.java
 j -d out $src_dir/$sub || exit
 k -d $kjar -include-runtime -no-reflect $src_dir/$alt || exit
 j -d out $src_dir/$main || exit
-dx --dex --output=out/$dex out
+dx --dex $dx_opt --output=out/$dex out
 pkg -F out/$apk
 
 cd out
