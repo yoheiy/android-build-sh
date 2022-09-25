@@ -1,8 +1,9 @@
 #!/bin/sh
 
 ajar=/usr/lib/android-sdk/platforms/android-23/android.jar
-kjar=out/kt.jar
+kjar=out/classes/kt.jar
 src_dir=src/com/example/firstkotlin
+cls_dir=out/classes
 main=MainAct.java
 sub=Sub.java
 alt=Alt.kt
@@ -20,9 +21,9 @@ v && verbose=-verbose
 v && vout=stdout
 v || vout=null
 
-#alias j="ecj -7 $verbose -cp out:$ajar"
-alias j="javac   $verbose -cp out:$ajar:$kjar --release 8"
-alias k="kotlinc $verbose -cp out:$ajar"
+#alias j="ecj -7 $verbose -cp $cls_dir:$ajar"
+alias j="javac   $verbose -cp $cls_dir:$ajar:$kjar --release 8"
+alias k="kotlinc $verbose -cp $cls_dir:$ajar"
 alias pkg="aapt p $v -M $manif -S res -I $ajar"
 alias add="aapt a $v"
 
@@ -31,20 +32,20 @@ findsort(){ find * -type f | sort ; true ; }
 # --- main ---
 
 test "x$1" = xfind && findsort && exit
-test "x$1" = x-c && { j -d out $src; exit; }
+test "x$1" = x-c && { j -d $cls_dir $src_dir; exit; }
 
 rm -fr gen out
 test "x$1" = xclean && exit
-mkdir -p gen out
+mkdir -p gen $cls_dir
 
 v && set -x
 
 pkg -J gen || exit
-j -d out gen/R.java
-j -d out $src_dir/$sub || exit
+j -d $cls_dir gen/R.java
+j -d $cls_dir $src_dir/$sub || exit
 k -d $kjar -include-runtime -no-reflect $src_dir/$alt || exit
-j -d out $src_dir/$main || exit
-dx --dex $dx_opt --output=out/$dex out
+j -d $cls_dir $src_dir/$main || exit
+dx --dex $dx_opt --output=out/$dex $cls_dir
 pkg -F out/$apk
 
 cd out
